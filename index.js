@@ -1,82 +1,99 @@
-// console.log("Hello!");
 const gameContainer = document.querySelector(".container");
 const userResult = document.querySelector(".userResult img");
 const cpuResult = document.querySelector(".cpuResult img");
 const result = document.querySelector(".result");
 const optionImages = document.querySelectorAll(".optionImage");
-// console.log(gameContainer, userResult, cpuResult, result, optionImages);
 
-//loop through each option image element
-optionImages.forEach((image, index) => {
-  image.addEventListener("click", (e) => {
-    // console.log("image clicked", image, index);
-    image.classList.add("active");
+const choices = ["R", "P", "S"];
+const cpuImages = [
+  "images/rock.png",
+  "images/paper.png",
+  "images/scissors.png",
+];
 
-    userResult.src = cpuResult.src = "images/rock.png";
-    result.textContent = "Wait...";
+const outcomes = {
+  RR: "Draw",
+  RP: "CPU",
+  RS: "YOU",
+  PP: "Draw",
+  PR: "YOU",
+  PS: "CPU",
+  SS: "Draw",
+  SR: "CPU",
+  SP: "YOU",
+};
 
-    //loop through each option element again
-    optionImages.forEach((image2, index2) => {
-      // console.log((index, index2));
-      //if the current index doesn't match the clicked index
-      //Remove the "active" class from the other option images
-      index != index2 && image2.classList.remove("active");
+/* ----------------- Utility functions ----------------- */
 
-      // console.log(e.target);
-    });
+function resetUI() {
+  userResult.src = cpuResult.src = "images/rock.png";
+  result.textContent = "Wait...";
+}
 
-    gameContainer.classList.add("start");
-
-    //Set a timeout to delay the result calculation
-
-    let time = setTimeout(() => {
-      gameContainer.classList.remove("start");
-
-      //Get the source of the clicked option image
-      let imageSrc = e.target.querySelector("img").src;
-      //Set the user image to the clicked option image
-      userResult.src = imageSrc;
-      // console.log(imageSrc);
-
-      //Generate a random number between 0 and 2
-      let randomNumber = Math.floor(Math.random() * 3);
-      // console.log(randomNumber);
-      //Create an array of CPU image options
-      let cpuImages = [
-        "images/rock.png",
-        "images/paper.png",
-        "images/scissors.png",
-      ];
-      //Set the CPU image to a random option from the array
-      cpuResult.src = cpuImages[randomNumber];
-
-      //Assign a letter to the CPU option("R" for rock, "P" for paper, "S" for scissors)
-      let cpuValue = ["R", "P", "S"][randomNumber];
-
-      //Assign a letter value to the clicked option (based on index)
-      let userValue = ["R", "P", "S"][index];
-
-      //Create an object with all the possible outcomes
-      let outcomes = {
-        RR: "Draw",
-        RP: "CPU",
-        RS: "YOU",
-        PP: "Draw",
-        PR: "YOU",
-        PS: "CPU",
-        SS: "Draw",
-        SR: "CPU",
-        SP: "YOU",
-      };
-
-      //Lookup the outcome value based on user and CPU options
-      let outComeValue = outcomes[userValue + cpuValue];
-      // console.log(cpuValue, userValue);
-      // console.log(outComeValue);
-
-      //Display the result
-      result.textContent =
-        userValue === cpuValue ? "Match Draw" : `${outComeValue} Won!!!`;
-    }, 2500);
+function setActiveOption(clickedIndex) {
+  optionImages.forEach((img, index) => {
+    img.classList.toggle("active", index === clickedIndex);
   });
-});
+}
+
+function startAnimation() {
+  gameContainer.classList.add("start");
+}
+
+function stopAnimation() {
+  gameContainer.classList.remove("start");
+}
+
+function getUserChoice(index, target) {
+  return {
+    value: choices[index],
+    image: target.querySelector("img").src,
+  };
+}
+
+function getCpuChoice() {
+  const randomIndex = Math.floor(Math.random() * 3);
+  return {
+    value: choices[randomIndex],
+    image: cpuImages[randomIndex],
+  };
+}
+
+function determineWinner(userValue, cpuValue) {
+  if (userValue === cpuValue) return "Match Draw";
+  return `${outcomes[userValue + cpuValue]} Won!!!`;
+}
+
+function updateResults(userImage, cpuImage, message) {
+  userResult.src = userImage;
+  cpuResult.src = cpuImage;
+  result.textContent = message;
+}
+
+/* ----------------- Main game logic ----------------- */
+
+function playRound(index, event) {
+  resetUI();
+  setActiveOption(index);
+  startAnimation();
+
+  setTimeout(() => {
+    stopAnimation();
+
+    const user = getUserChoice(index, event.currentTarget);
+    const cpu = getCpuChoice();
+    const finalResult = determineWinner(user.value, cpu.value);
+
+    updateResults(user.image, cpu.image, finalResult);
+  }, 2500);
+}
+
+/* ----------------- Event binding ----------------- */
+
+function initGame() {
+  optionImages.forEach((image, index) => {
+    image.addEventListener("click", (e) => playRound(index, e));
+  });
+}
+
+initGame();
