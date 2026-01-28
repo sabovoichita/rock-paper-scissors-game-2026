@@ -22,50 +22,58 @@ optionImages.forEach((image, index) => {
       // console.log(e.target);
     });
 
-    //Get the source of the clicked option image
-    let imageSrc = e.target.querySelector("img").src;
-    //Set the user image to the clicked option image
-    userResult.src = imageSrc;
-    // console.log(imageSrc);
+    gameContainer.classList.add("start");
 
-    //Generate a random number between 0 and 2
-    let randomNumber = Math.floor(Math.random() * 3);
-    // console.log(randomNumber);
-    //Create an array of CPU image options
-    let cpuImages = [
-      "images/rock.png",
-      "images/paper.png",
-      "images/scissors.png",
-    ];
-    //Set the CPU image to a random option from the array
-    cpuResult.src = cpuImages[randomNumber];
+    //Set a timeout to delay the result calculation
 
-    //Assign a letter to the CPU option("R" for rock, "P" for paper, "S" for scissors)
-    let cpuValue = ["R", "P", "S"][randomNumber];
+    let time = setTimeout(() => {
+      gameContainer.classList.remove("start");
 
-    //Assign a letter value to the clicked option (based on index)
-    let userValue = ["R", "P", "S"][index];
+      //Get the source of the clicked option image
+      let imageSrc = e.target.querySelector("img").src;
+      //Set the user image to the clicked option image
+      userResult.src = imageSrc;
+      // console.log(imageSrc);
 
-    //Create an object with all the possible outcomes
-    let outcomes = {
-      RR: "Draw",
-      RP: "CPU",
-      RS: "YOU",
-      PP: "Draw",
-      PR: "YOU",
-      PS: "CPU",
-      SS: "Draw",
-      SR: "CPU",
-      SP: "YOU",
-    };
+      //Generate a random number between 0 and 2
+      let randomNumber = Math.floor(Math.random() * 3);
+      // console.log(randomNumber);
+      //Create an array of CPU image options
+      let cpuImages = [
+        "images/rock.png",
+        "images/paper.png",
+        "images/scissors.png",
+      ];
+      //Set the CPU image to a random option from the array
+      cpuResult.src = cpuImages[randomNumber];
 
-    //Lookup the outcome value based on user and CPU options
-    let outComeValue = outcomes[userValue + cpuValue];
-    // console.log(cpuValue, userValue);
-    // console.log(outComeValue);
+      //Assign a letter to the CPU option("R" for rock, "P" for paper, "S" for scissors)
+      let cpuValue = ["R", "P", "S"][randomNumber];
 
-    //Display the result
-    result.textContent =
-      userValue === cpuValue ? "Match Draw" : `${outComeValue} Won!!!`;
+      //Assign a letter value to the clicked option (based on index)
+      let userValue = ["R", "P", "S"][index];
+
+      //Create an object with all the possible outcomes
+      let outcomes = {
+        RR: "Draw",
+        RP: "CPU",
+        RS: "YOU",
+        PP: "Draw",
+        PR: "YOU",
+        PS: "CPU",
+        SS: "Draw",
+        SR: "CPU",
+        SP: "YOU",
+      };
+
+      //Lookup the outcome value based on user and CPU options
+      let outComeValue = outcomes[userValue + cpuValue];
+      // console.log(cpuValue, userValue);
+      // console.log(outComeValue);
+
+      //Display the result
+      result.textContent =
+        userValue === cpuValue ? "Match Draw" : `${outComeValue} Won!!!`;
+    }, 2500);
   });
 });

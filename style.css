@@ -19,6 +19,25 @@ body {
   background: #fff;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
+.container.start .userResult {
+  transform-origin: left;
+  animation: userShake 0.7s ease infinite;
+}
+@keyframes userShake {
+  50% {
+    transform: rotate(10deg);
+  }
+}
+.container.start .cpuResult {
+  transform-origin: right;
+  animation: userShake 0.7s ease infinite;
+}
+@keyframes cpuShake {
+  50% {
+    transform: rotate(-10deg);
+  }
+}
+
 .resultImages {
   display: flex;
   column-gap: 40px;
@@ -46,6 +65,9 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-top: 30px;
+}
+.container.start .optionImages {
+  pointer-events: none;
 }
 .optionImage:hover {
   opacity: 1;
