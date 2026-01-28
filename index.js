@@ -12,6 +12,9 @@ optionImages.forEach((image, index) => {
     // console.log("image clicked", image, index);
     image.classList.add("active");
 
+    userResult.src = cpuResult.src = "images/rock.png";
+    result.textContent = "Wait...";
+
     //loop through each option element again
     optionImages.forEach((image2, index2) => {
       // console.log((index, index2));
