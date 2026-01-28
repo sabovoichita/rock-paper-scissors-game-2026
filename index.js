@@ -62,6 +62,10 @@ optionImages.forEach((image, index) => {
     //Lookup the outcome value based on user and CPU options
     let outComeValue = outcomes[userValue + cpuValue];
     // console.log(cpuValue, userValue);
-    console.log(outComeValue);
+    // console.log(outComeValue);
+
+    //Display the result
+    result.textContent =
+      userValue === cpuValue ? "Match Draw" : `${outComeValue} Won!!!`;
   });
 });
