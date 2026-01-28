@@ -50,6 +50,9 @@ body {
 .optionImage:hover {
   opacity: 1;
 }
+.optionImage.active {
+  opacity: 1;
+}
 .optionImage {
   display: flex;
   flex-direction: column;
