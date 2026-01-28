@@ -34,3 +34,10 @@ body {
 .cpuResult img {
   transform: rotate(-90deg) rotateY(180deg);
 }
+
+.result {
+  text-align: center;
+  font-size: 40px;
+  color: rgb(80, 77, 77);
+  margin-top: 30px;
+}
